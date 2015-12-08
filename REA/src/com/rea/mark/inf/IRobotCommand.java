@@ -1,5 +1,7 @@
 package com.rea.mark.inf;
 
+import com.rea.mark.impl.CommandResponse;
+
 /**
  * Robot commands
  * 
@@ -10,20 +12,26 @@ public interface IRobotCommand {
 	/**
 	 * Move forward command
 	 */
-	void move();
+	CommandResponse move();
 
 	/**
 	 * Rotate -90 degrees command
 	 */
-	void left();
+	CommandResponse left();
 
 	/**
 	 * Rotate 90 degrees command
 	 */
-	void right();
+	CommandResponse right();
 
 	/**
 	 * Report current situation command
 	 */
-	void report();
+	CommandResponse report();
+	
+	/**
+	 * Place robot on the tabletop
+	 * @param args place position and orientation degree
+	 */
+	CommandResponse place(int...args);
 }

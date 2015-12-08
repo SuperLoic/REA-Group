@@ -1,5 +1,6 @@
 package com.rea.mark.impl.command;
 
+import com.rea.mark.impl.CommandResponse;
 import com.rea.mark.inf.ICommand;
 import com.rea.mark.inf.IRobot;
 import com.rea.mark.inf.IRobotActivity;
@@ -28,18 +29,31 @@ public abstract class Command implements ICommand {
 		return tabletop;
 	}
 
-	protected void log(String msg) {
-		System.out.println(msg);
+	/**
+	 * Print out the log
+	 * 
+	 * @param msgs
+	 */
+	protected void log(String... msgs) {
+		if (msgs.length == 1) {
+			System.out.println(msgs[0]);
+		} else {
+			StringBuffer sb = new StringBuffer();
+			for (String msg : msgs) {
+				sb.append(msg);
+			}
+			System.out.println(sb.toString());
+		}
 	}
 
 	@Override
-	public boolean execute(int... args) {
+	public CommandResponse execute() {
 		// if robot is not on the tabletop, then ignore MOVE,LEFT,RIGHT and
 		// REPORT command
 		if (null == tabletop || null == robot) {
 			log("A robot that is not on the table can choose the ignore the MOVE, LEFT, RIGHT and REPORT commands");
 		}
-		return executeCore(args);
+		return executeCore();
 	}
 
 	/**
@@ -48,8 +62,8 @@ public abstract class Command implements ICommand {
 	 * @param args
 	 * @return
 	 */
-	protected boolean executeCore(int... args) {
-		return true;
+	protected CommandResponse executeCore() {
+		return null;
 	}
 
 }

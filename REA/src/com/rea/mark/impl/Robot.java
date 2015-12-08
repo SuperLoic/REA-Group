@@ -41,4 +41,9 @@ public class Robot implements IRobot {
 	public IRobotActivity getRobotActivity() {
 		return robotActivity;
 	}
+
+	@Override
+	public String toString() {
+		return String.format("%d,%d,%s", x, y, direction.getName());
+	}
 }

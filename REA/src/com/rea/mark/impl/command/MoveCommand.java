@@ -1,5 +1,6 @@
 package com.rea.mark.impl.command;
 
+import com.rea.mark.impl.CommandResponse;
 import com.rea.mark.inf.IRobot;
 import com.rea.mark.inf.ITabletop;
 
@@ -10,9 +11,14 @@ public class MoveCommand extends Command {
 	}
 
 	@Override
-	protected boolean executeCore(int... args) {
-		robotActivity.move(robot, tabletop);
-		return true;
+	protected CommandResponse executeCore() {
+		log("MOVE");
+		boolean isMoved = robotActivity.move(robot, tabletop);
+		if (!isMoved) {
+			log("MOVE FORWARD FAILED");
+			return new CommandResponse(false, this.getClass(), "MOVE FORWARD FAILED", hashCode());
+		}
+		return new CommandResponse(true, this.getClass(), "SUCCESSFULLY MOVE FORWARD", hashCode());
 	}
 
 }

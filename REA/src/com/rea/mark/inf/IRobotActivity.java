@@ -21,8 +21,9 @@ public interface IRobotActivity {
 	 *            robot which is on the tabletop
 	 * @param tabletop
 	 *            tabletop where there is a robot
+	 * @return move successfully
 	 */
-	void move(IRobot robot, ITabletop tabletop);
+	boolean move(IRobot robot, ITabletop tabletop);
 
 	/**
 	 * Robot be able to rotate left or right
@@ -43,8 +44,9 @@ public interface IRobotActivity {
 	 *            robot which is on the tabletop
 	 * @param tabletop
 	 *            tabletop where there is a robot
+	 * @return report result
 	 */
-	void report(IRobot robot, ITabletop tabletop);
+	String report(IRobot robot, ITabletop tabletop);
 
 	/**
 	 * Enable to place robot on specific position and orientation

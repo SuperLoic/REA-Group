@@ -15,23 +15,25 @@ import com.rea.mark.inf.ITabletop;
 public class RobotActivity implements IRobotActivity {
 
 	@Override
-	public void move(IRobot robot, ITabletop tabletop) {
+	public boolean move(IRobot robot, ITabletop tabletop) {
 		Direction direction = robot.getDirection();
+		boolean moveStatus = true;
 		switch (direction) {
 		case NORTH:
-			move(robot, tabletop, 0, 1);
+			moveStatus = move(robot, tabletop, 0, 1);
 			break;
 		case SOUTH:
-			move(robot, tabletop, 0, -1);
+			moveStatus = move(robot, tabletop, 0, -1);
 			break;
 		case EAST:
-			move(robot, tabletop, 1, 0);
+			moveStatus = move(robot, tabletop, 1, 0);
 			break;
 		case WEST:
-			move(robot, tabletop, -1, 0);
+			moveStatus = move(robot, tabletop, -1, 0);
 		default:
 			break;
 		}
+		return moveStatus;
 	}
 
 	/**
@@ -46,31 +48,46 @@ public class RobotActivity implements IRobotActivity {
 	 * @param offestY
 	 *            instruction of y direction move steps
 	 */
-	public void move(IRobot robot, ITabletop tabletop, int offsetX, int offestY) {
+	public boolean move(IRobot robot, ITabletop tabletop, int offsetX, int offestY) {
 		int maxYUnits = tabletop.getYUnits();
 		int maxXUnits = tabletop.getXUnits();
 		int currentX = robot.getX();
 		int currentY = robot.getY();
 		// prevent robot from falling to destruction
-		currentX = (currentX + offsetX) <= maxXUnits ? (currentX + offsetX) : maxXUnits;
-		currentY = (currentY + offestY) <= maxYUnits ? (currentY + offestY) : maxYUnits;
-		robot.setX(currentX);
-		robot.setY(currentY);
+		int newX = currentX + offsetX;
+		int newY = currentY + offestY;
+
+		// restrict current position
+		if (newX > (maxXUnits - 1) || newX < 0 || newY > (maxYUnits - 1) || newY < 0) {
+			return false;
+		}
+
+		// update current position
+		robot.setX(newX);
+		robot.setY(newY);
+		return true;
 	}
 
 	@Override
 	public void turn(IRobot robot, ITabletop tabletop, Rotation rotation) {
 		int currentDegree = robot.getDirection().getDegree();
 		int offsetDegree = rotation.getDegree();
+		int newDegree = currentDegree + offsetDegree;
+		newDegree = newDegree < 0 ? (360 + newDegree) : newDegree;
 		// 360 degree and 0 degree both are at the same orientation
-		currentDegree = ((currentDegree + offsetDegree) == 360) ? 0 : (currentDegree + offsetDegree);
+		currentDegree = newDegree == 360 ? 0 : newDegree;
 		// update the direction of robot
 		robot.setDirection(Direction.getDirection(currentDegree));
 	}
 
 	@Override
-	public void report(IRobot robot, ITabletop tabletop) {
-		System.out.printf("%d,%d,%s", robot.getX(), robot.getY(), robot.getDirection().getDescription());
+	public String report(IRobot robot, ITabletop tabletop) {
+		System.out.println();
+		System.out.println("Expected output:");
+		System.out.println();
+		String reportResult = String.format("%d,%d,%s", robot.getX(), robot.getY(), robot.getDirection().getName());
+		System.out.printf(reportResult);
+		return reportResult;
 	}
 
 	@Override
