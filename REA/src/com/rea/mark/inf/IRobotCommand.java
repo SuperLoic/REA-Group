@@ -28,10 +28,12 @@ public interface IRobotCommand {
 	 * Report current situation command
 	 */
 	CommandResponse report();
-	
+
 	/**
 	 * Place robot on the tabletop
-	 * @param args place position and orientation degree
+	 * 
+	 * @param args
+	 *            place position and orientation degree
 	 */
-	CommandResponse place(int...args);
+	CommandResponse place(int... args);
 }
